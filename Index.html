@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+        .video-container {
+            width: 80%;
+            max-width: 800px;
+            margin-top: 20px;
+            position: relative;
+        }
+        video {
+            width: 50%;
+            height: auto;
+        }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .upload-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="video-container">
+    <video id="videoPlayer" controls>
+        <source id="videoSource" src="video1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="controls">
+        <button onclick="previousVideo()">Previous</button>
+        <button onclick="nextVideo()">Next</button>
+    </div>
+</div>
+
+<div class="upload-container">
+    <input type="file" id="fileInput" accept="video/mp4">
+    <button onclick="uploadVideo()">Upload</button>
+</div>
+
+<script>
+    const videos = ["video1.mp4", "video2.mp4", "video3.mp4"]; // Add your video files here
+    let currentVideoIndex = 0;
+
+    function updateVideoSource() {
+        const videoPlayer = document.getElementById("videoPlayer");
+        const videoSource = document.getElementById("videoSource");
+        videoSource.src = videos[currentVideoIndex];
+        videoPlayer.load();
+    }
+
+    function previousVideo() {
+        if (currentVideoIndex > 0) {
+            currentVideoIndex--;
+            updateVideoSource();
+        } else {
+            alert("This is the first video.");
+        }
+    }
+
+    function nextVideo() {
+        if (currentVideoIndex < videos.length - 1) {
+            currentVideoIndex++;
+            updateVideoSource();
+        } else {
+            alert("This is the last video.");
+        }
+    }
+
+    function uploadVideo() {
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+        if (file && file.type === "video/mp4") {
+            const videoURL = URL.createObjectURL(file);
+            videos.push(videoURL);
+            currentVideoIndex = videos.length - 1;
+            updateVideoSource();
+        } else {
+            alert("Please select a valid MP4 file.");
+        }
+    }
+</script>
+
+</body>
+</html>
